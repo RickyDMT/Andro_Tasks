@@ -371,11 +371,12 @@ if doPart1and2==1
         %this actually draws everything for the trials
         doCompeteTrial(trial,position);
         
+        %This is test of saving per trial
+         save([savedir 'AllData_' num2str(AllData.SUBID(1)) '.mat'],'AllData');
     end
   
 
-%This is test of saving per trial
-save([savedir 'AllData_' num2str(AllData.SUBID(1)) '.mat'],'AllData');
+
 
 end
 
