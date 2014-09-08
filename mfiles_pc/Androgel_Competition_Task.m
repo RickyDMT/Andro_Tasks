@@ -2,7 +2,8 @@ function Androgel_Competition_Task(ID)
 
 %Script for Androgel Competition Study
 %Modified by Pablo Morales and Jason Hubbard, May 2014
-%Featuring Ricky DMT on the gutbucket.
+%Featuring RickyDMT on the gutbucket.
+%Sept-08-2014 Update: Saving results per trial! RickyDMT.
 
 %clear variables
 % clear %clears workspace
@@ -372,9 +373,10 @@ if doPart1and2==1
         
     end
   
-  %save this along the way, in case we need to start up at part 3 only..
-%   save([assignmentsdir num2str(AllData.SubjectID) '_Part2Backup.mat'],'AllData');  
-     
+
+%This is test of saving per trial
+save([savedir 'AllData_' num2str(AllData.SUBID(1)) '.mat'],'AllData');
+
 end
 
 
