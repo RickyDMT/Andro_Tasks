@@ -1,0 +1,10 @@
++ 		= Ch1
+Deal 		= Ch2
+Pub/Priv	= Ch4/5
+Rating		= Ch8
+Typing		= Ch16
+Results		= Ch32
+
+Replay:
+Win/Lose	= Ch40/48
+Replay Trial	= as above
