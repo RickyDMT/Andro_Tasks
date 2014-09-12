@@ -167,11 +167,31 @@ fprintf('Total Payout is: $%.2f\n',totalpayout);
 %Save public & private donations to a .mat in "Results" folder to keep
 %running tally of how much we owe FfLC.
 
-load('proDMT_donationlog.mat');
-nextline = size(proDMT_donationlog,1)+1;
-proDMT_donationlog(nextline,1:4)={datestr(now),idnum,pubDMT_donated,privDMT_donated};
+try 
+    load('proDMT_donationlog.mat');
+    nextline = size(proDMT_donationlog,1)+1;
+    proDMT_donationlog(nextline,1:4)={datestr(now),idnum,pubDMT_donated,privDMT_donated};
 
-save([resultsDir 'proDMT_donationlog.mat'],'proDMT_donationlog');
+    save([resultsDir 'proDMT_donationlog.mat'],'proDMT_donationlog');
+catch %Think this may be wrong. Check out StopSigTask to see how they try/catch.
+    fprintf('There was a problem loading or saving the proDMT log file. Saving new file instead.');
+    proDMT_log_errname = sprintf('proDMT_donationlog_%d.mat',idnum);
+    proDMT_log_err = {datestr(now),idnum,pubDMT_donated,privDMT_donated};
+    save([resultsDir proDMT_log_errname],'proDMT_log_err');
+end
 
+%% Save total payout values because that seems like that would be a good idea. ELK 9/12
+% Save each of 6 values (4 comp, 2 proDMT) to a .mat in "Results" folder
 
+try
+    load('Bonus_Payments.mat');
+    nextline = size(Bonus_Payments,1)+1;
+    Bonus_Payments(nextline,1:8)={datestr(now),idnum,Choice,ManComp,ManPiece,Replay,pubDMT,privDMT};
+
+    save([resultsDir 'Bonus_Payments.mat'],'Bonus_Payments');
+catch
+    fprintf('There was a problem loading or saving the Bonus Payment file. Saving new file instead.');
+    Bonus_Payment_errname = sprintf('Bonus_Payments_%d.mat',idnum);
+    Bonus_Payment_err = {datestr(now),idnum,Choice,ManComp,ManPiece,Replay,pubDMT,privDMT};
+    save([resultsDir Bonus_Payment_errname],'Bonus_Payment_err');
 end
