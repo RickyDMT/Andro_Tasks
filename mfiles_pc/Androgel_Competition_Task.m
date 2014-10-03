@@ -229,7 +229,20 @@ end
 %%
 if doPart1and2==1
     %%%%%%%%%%%%%%%%%%%%%%%% PART 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-   
+%     Logfile Fun: Save trial by trial info in logfile for if/when script
+%     crashes.
+logfile = sprintf('Androgel_%0.3d_Comp.log',ID);
+logfile = [savedir logfile];
+fid = fopen(logfile,'a');
+
+if fid < 1  %test if you can open, save a log file
+    error('Could not open logfile.');
+end
+d = clock;
+fprintf(fid,'Subj: %0.3d\tDate: %s %2.0f:%02.0f\n',ID,date,d(4),d(5));
+
+    
+    
     % Part 1 begins here
     Screen('FillRect',w,COLORS.BLACK);
     DrawFormattedText(w,'Part 1\nPress any key to continue.','center','center',white);
@@ -370,9 +383,20 @@ if doPart1and2==1
         dothedo = 100+trial;
         %this actually draws everything for the trials
         doCompeteTrial(trial,position);
-        
-        %This is test of saving per trial
-         save([savedir 'AllData_' num2str(AllData.SUBID(1)) '.mat'],'AllData');
+
+%         Trial-by-Trial Logfile
+        try
+            xx = trial;
+            ff = fieldnames(AllData);
+            %Saves SUBID, Trial, Mandatory, TrialType, Gender, Higher,
+            %Observe, Opponent, Choice, Choice_RT, Rating_RT, Start_Equation_RT, Rating,
+            %WinLose, Score.
+            fprintf(fid,'%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%f\t%f\t%f\t%d\t%d\t%d\n',...
+                AllData.(ff{1})(trial),AllData.(ff{2})(trial),AllData.(ff{4})(trial),AllData.(ff{5})(trial),AllData.(ff{6})(trial),AllData.(ff{7})(trial),AllData.(ff{8})(trial),AllData.(ff{9})(trial),AllData.(ff{12})(trial),AllData.(ff{13})(trial),AllData.(ff{14})(trial),AllData.(ff{15})(trial),AllData.(ff{16})(trial),AllData.(ff{17})(trial),AllData.(ff{18})(trial));
+        catch
+            fprintf(fid,'ERROR SAVING THIS TRIAL\n');
+        end
+
     end
   
 
